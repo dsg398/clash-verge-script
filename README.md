@@ -13,4 +13,5 @@ clash-verge Mihomo Party 防DNS泄露脚本 （通用）
 20250822 B站规则默认直连，添加判断config["proxies"]
 
 20250926 添加TikTok分流规则
+
 来源于xiaolin-007,自己增加了Instagram分流

@@ -125,36 +125,36 @@ const regionGroups = [
   {
     name: "香港节点",
     regionFilter: "(?i)香港|hk|HK",
-    lowRateFilter: "^(?!.*(10x|20x|30x|高倍率|倍速)).*$",
-    highRateFilter: "(?i)10x|20x|30x|高倍率|倍速",
+    lowRateFilter: "^(?!.*(0.01x|0.1x|1x|倍率|倍速)).*$",
+    highRateFilter: "(?i)2x|3x|5x|高倍率|倍速",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png"
   },
   {
     name: "美国节点",
     regionFilter: "(?i)美国|us|US|america",
-    lowRateFilter: "^(?!.*(10x|20x|30x|高倍率|倍速)).*$",
-    highRateFilter: "(?i)10x|20x|30x|高倍率|倍速",
+    lowRateFilter: "^(?!.*(0.01x|0.1x|1x|倍率|倍速)).*$",
+    highRateFilter: "(?i)2x|3x|5x|高倍率|倍速",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png"
   },
   {
     name: "日本节点",
     regionFilter: "(?i)日本|jp|JP|japan",
-    lowRateFilter: "^(?!.*(10x|20x|30x|高倍率|倍速)).*$",
-    highRateFilter: "(?i)10x|20x|30x|高倍率|倍速",
+    lowRateFilter: "^(?!.*(0.01x|0.1x|1x|倍率|倍速)).*$",
+    highRateFilter: "(?i)2x|3x|5x|高倍率|倍速",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png"
   },
   {
     name: "台湾节点",
     regionFilter: "(?i)台湾|tw|TW",
-    lowRateFilter: "^(?!.*(10x|20x|30x|高倍率|倍速)).*$",
-    highRateFilter: "(?i)10x|20x|30x|高倍率|倍速",
+    lowRateFilter: "^(?!.*(0.01x|0.1x|1x|倍率|倍速)).*$",
+    highRateFilter: "(?i)2x|3x|5x|高倍率|倍速",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/China.png"
   },
   {
     name: "新加坡节点",
     regionFilter: "(?i)新加坡|sg|SG|singapore",
-    lowRateFilter: "^(?!.*(10x|20x|30x|高倍率|倍速)).*$",
-    highRateFilter: "(?i)10x|20x|30x|高倍率|倍速",
+    lowRateFilter: "^(?!.*(0.01x|0.1x|1x|倍率|倍速)).*$",
+    highRateFilter: "(?i)2x|3x|5x|高倍率|倍速",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png"
   }
 ];

@@ -125,31 +125,31 @@ const regionGroups = [
   {
     name: "香港节点",
     filter: "(?i)香港|hk|HK", // 地区筛选：匹配含“香港”“hk”的节点
-    lowRateFilter: "^(?!.*(10x|20x|30x|高倍率|倍速)).*$", // 排除高倍率节点（可自定义关键词）
+    lowRateFilter: "^(?!.*(2x|5x|10x|高倍率|倍速)).*$", // 排除高倍率节点（可自定义关键词）
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png"
   },
   {
     name: "美国节点",
     filter: "(?i)美国|us|US|america",
-    lowRateFilter: "^(?!.*(10x|20x|30x|高倍率|倍速)).*$",
+    lowRateFilter: "^(?!.*(2x|5x|10x|高倍率|倍速)).*$",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png"
   },
   {
     name: "日本节点",
     filter: "(?i)日本|jp|JP|japan",
-    lowRateFilter: "^(?!.*(10x|20x|30x|高倍率|倍速)).*$",
+    lowRateFilter: "^(?!.*(2x|5x|10x|高倍率|倍速)).*$",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png"
   },
   {
     name: "台湾节点",
     filter: "(?i)台湾|tw|TW",
-    lowRateFilter: "^(?!.*(10x|20x|30x|高倍率|倍速)).*$",
+    lowRateFilter: "^(?!.*(2x|5x|10x|高倍率|倍速)).*$",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/China.png"
   },
   {
     name: "新加坡节点",
     filter: "(?i)新加坡|sg|SG|singapore",
-    lowRateFilter: "^(?!.*(10x|20x|30x|高倍率|倍速)).*$",
+    lowRateFilter: "^(?!.*(2x|5x|10x|高倍率|倍速)).*$",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png"
   }
 ];

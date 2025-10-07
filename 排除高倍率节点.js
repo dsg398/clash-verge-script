@@ -125,36 +125,38 @@ const regionGroups = [
   {
     name: "香港节点",
     regionFilter: "(?i)香港|hk|HK",
-    lowRateFilter: "^(?!.*(0.01x|0.1x|1x|倍率|倍速)).*$",
-    highRateFilter: "(?i)2x|3x|5x|高倍率|倍速",
+    // 低倍率：匹配x0.01, x0.1, x1等低倍率
+    lowRateFilter: "(?i)x0\\.01|x0\\.1|x1|0\\.01x|0\\.1x|1x|低倍率",
+    // 高倍率：匹配x2, x3, x5等高倍率
+    highRateFilter: "(?i)x2|x3|x5|2x|3x|5x|高倍率",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png"
   },
   {
     name: "美国节点",
     regionFilter: "(?i)美国|us|US|america",
-    lowRateFilter: "^(?!.*(0.01x|0.1x|1x|倍率|倍速)).*$",
-    highRateFilter: "(?i)2x|3x|5x|高倍率|倍速",
+    lowRateFilter: "(?i)x0\\.01|x0\\.1|x1|0\\.01x|0\\.1x|1x|低倍率",
+    highRateFilter: "(?i)x2|x3|x5|2x|3x|5x|高倍率",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png"
   },
   {
     name: "日本节点",
     regionFilter: "(?i)日本|jp|JP|japan",
-    lowRateFilter: "^(?!.*(0.01x|0.1x|1x|倍率|倍速)).*$",
-    highRateFilter: "(?i)2x|3x|5x|高倍率|倍速",
+    lowRateFilter: "(?i)x0\\.01|x0\\.1|x1|0\\.01x|0\\.1x|1x|低倍率",
+    highRateFilter: "(?i)x2|x3|x5|2x|3x|5x|高倍率",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png"
   },
   {
     name: "台湾节点",
     regionFilter: "(?i)台湾|tw|TW",
-    lowRateFilter: "^(?!.*(0.01x|0.1x|1x|倍率|倍速)).*$",
-    highRateFilter: "(?i)2x|3x|5x|高倍率|倍速",
+    lowRateFilter: "(?i)x0\\.01|x0\\.1|x1|0\\.01x|0\\.1x|1x|低倍率",
+    highRateFilter: "(?i)x2|x3|x5|2x|3x|5x|高倍率",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/China.png"
   },
   {
     name: "新加坡节点",
     regionFilter: "(?i)新加坡|sg|SG|singapore",
-    lowRateFilter: "^(?!.*(0.01x|0.1x|1x|倍率|倍速)).*$",
-    highRateFilter: "(?i)2x|3x|5x|高倍率|倍速",
+    lowRateFilter: "(?i)x0\\.01|x0\\.1|x1|0\\.01x|0\\.1x|1x|低倍率",
+    highRateFilter: "(?i)x2|x3|x5|2x|3x|5x|高倍率",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png"
   }
 ];
@@ -171,48 +173,58 @@ function main(config) {
   // 覆盖DNS配置
   config["dns"] = dnsConfig;
 
-  // 生成地区分组（修复正则表达式语法）
+  // 生成地区分组：每个地区包含"自动"选项和该地区所有节点
   const regionGroupConfigs = [];
   regionGroups.forEach(region => {
-    // 1. 低倍率子分组：筛选"目标地区+低倍率"节点，选延迟最低的
-    const lowRateSubGroup = {
+    // 1. 低倍率自动选择子组：选择该地区低倍率中延迟最低的节点
+    const lowRateAutoGroup = {
       ...groupBaseOption,
-      "name": `${region.name}-低倍率`,
+      "name": `${region.name}-低倍率自动`,
       "type": "url-test",
       "interval": 120,
       "tolerance": 200,
       "include-all": true,
-      // 修复：使用字符串拼接正则表达式，而非new RegExp()
       "filter": `${region.regionFilter} && ${region.lowRateFilter}`,
-      "hidden": true,
+      "hidden": true, // 隐藏子组，仅在自动选项中使用
       "icon": region.icon
     };
 
-    // 2. 高倍率子分组：筛选"目标地区+高倍率"节点，选延迟最低的
-    const highRateSubGroup = {
+    // 2. 高倍率自动选择子组：选择该地区高倍率中延迟最低的节点
+    const highRateAutoGroup = {
       ...groupBaseOption,
-      "name": `${region.name}-高倍率`,
+      "name": `${region.name}-高倍率自动`,
       "type": "url-test",
       "interval": 120,
       "tolerance": 200,
       "include-all": true,
-      // 修复：使用字符串拼接正则表达式
       "filter": `${region.regionFilter} && ${region.highRateFilter}`,
-      "hidden": true,
+      "hidden": true, // 隐藏子组，仅在自动选项中使用
       "icon": region.icon
     };
 
-    // 3. 地区主分组：故障转移，优先低倍率子组
-    const mainGroup = {
+    // 3. 地区自动选项：优先低倍率，超时后切换到高倍率
+    const autoOptionGroup = {
+      ...groupBaseOption,
+      "name": `${region.name}-自动`,
+      "type": "fallback", // 故障转移类型：先尝试低倍率，失败后用高倍率
+      "interval": 300,
+      "proxies": [lowRateAutoGroup.name, highRateAutoGroup.name],
+      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/automatic.svg"
+    };
+
+    // 4. 地区全部节点分组：显示该地区所有节点，供手动选择
+    const allNodesGroup = {
       ...groupBaseOption,
       "name": region.name,
-      "type": "fallback",
-      "interval": 300,
-      "proxies": [lowRateSubGroup.name, highRateSubGroup.name],
+      "type": "select",
+      "include-all": true,
+      "filter": region.regionFilter,
+      "proxies": [autoOptionGroup.name], // 第一个选项是自动选择
       "icon": region.icon
     };
 
-    regionGroupConfigs.push(lowRateSubGroup, highRateSubGroup, mainGroup);
+    // 添加到配置（按顺序确保引用正确）
+    regionGroupConfigs.push(lowRateAutoGroup, highRateAutoGroup, autoOptionGroup, allNodesGroup);
   });
 
   // 覆盖代理组配置

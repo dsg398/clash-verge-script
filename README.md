@@ -14,6 +14,6 @@ clash-verge Mihomo Party 防DNS泄露脚本 （通用）
 
 20250926 添加TikTok分流规则
 
-20251007 NOW.js为自己修改使用用，增加了地区分组并自动选择节点，并增加Whatsapp和Twitter分流规则
+20251007 NOW.js为自己修改使用，增加了地区分组并自动选择节点，并增加Whatsapp和Twitter分流规则
 
 来源于xiaolin-007

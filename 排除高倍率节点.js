@@ -11,7 +11,7 @@ const foreignNameservers = [
   "https://8.8.4.4/dns-query", // GoogleDNS  
 
 ];
-// DNS配置
+// DNS配置（不变）
 const dnsConfig = {
   "enable": true,
   "listen": "0.0.0.0:1053",
@@ -37,14 +37,14 @@ const dnsConfig = {
   "nameserver-policy": { "geosite:private,cn": domesticNameservers }
 };
 
-// 规则集通用配置
+// 规则集通用配置（不变）
 const ruleProviderCommon = {
   "type": "http",
   "format": "yaml",
-  "interval": 86400 // 每天更新一次规则
+  "interval": 86400 // 每天更新规则
 };
 
-// 规则集配置（新增Twitter、Whatsapp规则）
+// 规则集配置（不变，含Twitter、Whatsapp）
 const ruleProviders = {
   "reject": { ...ruleProviderCommon, "behavior": "domain", "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt", "path": "./ruleset/loyalsoldier/reject.yaml" },
   "icloud": { ...ruleProviderCommon, "behavior": "domain", "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt", "path": "./ruleset/loyalsoldier/icloud.yaml" },
@@ -71,7 +71,7 @@ const ruleProviders = {
   "Whatsapp": { ...ruleProviderCommon, "behavior": "classical", "url": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/rule/Whatsapp.txt", "path": "./ruleset/dsg398/Whatsapp.yaml" }
 };
 
-// 规则（新增Twitter、Whatsapp分流）
+// 规则（不变，含Twitter、Whatsapp分流）
 const rules = [
   // 自定义规则
   "DOMAIN-SUFFIX,googleapis.cn,节点选择", // Google服务
@@ -110,46 +110,51 @@ const rules = [
   "MATCH,漏网之鱼"
 ];
 
-// 代理组通用配置
+// 代理组通用配置（不变）
 const groupBaseOption = {
   "interval": 300, // 健康检查间隔（秒）
   "timeout": 3000, // 超时时间（毫秒）
   "url": "https://www.google.com/generate_204", // 延迟测试地址
   "lazy": true, // 懒加载（仅使用时触发检查）
-  "max-failed-times": 3, // 最大失败次数（超过则标记不可用）
-  "hidden": false // 不隐藏分组（显示在UI中）
+  "max-failed-times": 3, // 最大失败次数（超过标记不可用）
+  "hidden": false // 默认显示分组
 };
 
-// 地区分组配置（新增倍率过滤关键词）
+// 地区分组配置：新增【低/高倍率筛选规则】
 const regionGroups = [
   {
     name: "香港节点",
-    filter: "(?i)香港|hk|HK", // 地区筛选：匹配含“香港”“hk”的节点
-    lowRateFilter: "^(?!.*(2x|5x|10x|高倍率|倍速)).*$", // 排除高倍率节点（可自定义关键词）
+    regionFilter: "(?i)香港|hk|HK", // 地区筛选：匹配“香港”“hk”
+    lowRateFilter: "^(?!.*(10x|20x|30x|高倍率|倍速)).*$", // 低倍率：排除高倍率关键词
+    highRateFilter: "(?i)10x|20x|30x|高倍率|倍速", // 高倍率：包含高倍率关键词
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png"
   },
   {
     name: "美国节点",
-    filter: "(?i)美国|us|US|america",
-    lowRateFilter: "^(?!.*(2x|5x|10x|高倍率|倍速)).*$",
+    regionFilter: "(?i)美国|us|US|america",
+    lowRateFilter: "^(?!.*(10x|20x|30x|高倍率|倍速)).*$",
+    highRateFilter: "(?i)10x|20x|30x|高倍率|倍速",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png"
   },
   {
     name: "日本节点",
-    filter: "(?i)日本|jp|JP|japan",
-    lowRateFilter: "^(?!.*(2x|5x|10x|高倍率|倍速)).*$",
+    regionFilter: "(?i)日本|jp|JP|japan",
+    lowRateFilter: "^(?!.*(10x|20x|30x|高倍率|倍速)).*$",
+    highRateFilter: "(?i)10x|20x|30x|高倍率|倍速",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png"
   },
   {
     name: "台湾节点",
-    filter: "(?i)台湾|tw|TW",
-    lowRateFilter: "^(?!.*(2x|5x|10x|高倍率|倍速)).*$",
+    regionFilter: "(?i)台湾|tw|TW",
+    lowRateFilter: "^(?!.*(10x|20x|30x|高倍率|倍速)).*$",
+    highRateFilter: "(?i)10x|20x|30x|高倍率|倍速",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/China.png"
   },
   {
     name: "新加坡节点",
-    filter: "(?i)新加坡|sg|SG|singapore",
-    lowRateFilter: "^(?!.*(2x|5x|10x|高倍率|倍速)).*$",
+    regionFilter: "(?i)新加坡|sg|SG|singapore",
+    lowRateFilter: "^(?!.*(10x|20x|30x|高倍率|倍速)).*$",
+    highRateFilter: "(?i)10x|20x|30x|高倍率|倍速",
     icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png"
   }
 ];
@@ -163,29 +168,61 @@ function main(config) {
     throw new Error("配置文件中未找到任何代理");
   }
 
-  // 覆盖DNS配置
+  // 覆盖DNS配置（不变）
   config["dns"] = dnsConfig;
 
-  // 关键修改：创建“低倍率+低延迟”的地区分组
-  const regionGroupConfigs = regionGroups.map(region => ({
-    ...groupBaseOption,
-    "name": region.name,
-    "type": "url-test", // 基础逻辑：延迟测试（选延迟最低）
-    "interval": 120, // 缩短延迟检测间隔（2分钟一次，更实时）
-    "tolerance": 200, // 延迟容忍度（200ms内视为同等优秀）
-    "include-all": true, // 先包含所有节点，再通过filter二次筛选
-    // 双重筛选：1. 匹配地区 2. 排除高倍率（顺序不可换）
-    "filter": new RegExp(`(${region.filter}) && (${region.lowRateFilter})`),
-    "icon": region.icon
-  }));
+  // 关键修改：生成【分层地区分组】（低倍率子组 + 高倍率子组 + 主组）
+  const regionGroupConfigs = [];
+  regionGroups.forEach(region => {
+    // 1. 低倍率子分组：筛选“目标地区+低倍率”节点，选延迟最低的
+    const lowRateSubGroup = {
+      ...groupBaseOption,
+      "name": `${region.name}-低倍率`, // 子组名称（隐藏）
+      "type": "url-test", // 延迟排序：选低延迟
+      "interval": 120, // 缩短检测间隔（2分钟，更实时）
+      "tolerance": 200, // 延迟容忍度（200ms内视为同等）
+      "include-all": true,
+      // 双重筛选：目标地区 + 低倍率
+      "filter": new RegExp(`(${region.regionFilter}) && (${region.lowRateFilter})`),
+      "hidden": true, // 隐藏子组，避免UI混乱
+      "icon": region.icon
+    };
 
-  // 覆盖代理组（地区分组位置保持在Spotify后）
+    // 2. 高倍率子分组：筛选“目标地区+高倍率”节点，选延迟最低的
+    const highRateSubGroup = {
+      ...groupBaseOption,
+      "name": `${region.name}-高倍率`, // 子组名称（隐藏）
+      "type": "url-test", // 延迟排序：选低延迟
+      "interval": 120,
+      "tolerance": 200,
+      "include-all": true,
+      // 双重筛选：目标地区 + 高倍率
+      "filter": new RegExp(`(${region.regionFilter}) && (${region.highRateFilter})`),
+      "hidden": true, // 隐藏子组
+      "icon": region.icon
+    };
+
+    // 3. 地区主分组：故障转移（fallback），优先低倍率子组
+    const mainGroup = {
+      ...groupBaseOption,
+      "name": region.name, // 对外显示的主组名称
+      "type": "fallback", // 优先级逻辑：先试低倍率，超时再试高倍率
+      "interval": 300,
+      "proxies": [lowRateSubGroup.name, highRateSubGroup.name], // 优先级：低倍率 > 高倍率
+      "icon": region.icon
+    };
+
+    // 按顺序加入配置（子组在前，主组在后，确保主组能引用子组）
+    regionGroupConfigs.push(lowRateSubGroup, highRateSubGroup, mainGroup);
+  });
+
+  // 覆盖代理组：地区分组保持在Spotify后
   config["proxy-groups"] = [
     {
       ...groupBaseOption,
       "name": "节点选择",
       "type": "select",
-      "proxies": ["延迟选优", "故障转移", ...regionGroups.map(g => g.name)],
+      "proxies": ["延迟选优", "故障转移", ...regionGroups.map(g => g.name)], // 引用地区主组
       "include-all": true,
       "filter": "^(?!.*(官网|套餐|流量|异常|剩余)).*$",
       "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/adjust.svg"
@@ -208,6 +245,7 @@ function main(config) {
       "filter": "^(?!.*(官网|套餐|流量|异常|剩余)).*$",
       "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/ambulance.svg"
     },
+    // 原有服务分组（谷歌、YouTube等，不变）
     { ...groupBaseOption, "name": "谷歌服务", "type": "select", "proxies": ["节点选择", "延迟选优", ...regionGroups.map(g => g.name), "全局直连"], "include-all": true, "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/google.svg" },
     { ...groupBaseOption, "name": "YouTube", "type": "select", "proxies": ["节点选择", "延迟选优", ...regionGroups.map(g => g.name), "全局直连"], "include-all": true, "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/youtube.svg" },
     { ...groupBaseOption, "name": "Netflix", "type": "select", "proxies": ["节点选择", "延迟选优", ...regionGroups.map(g => g.name), "全局直连"], "include-all": true, "icon": "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/icon/netflix.svg" },
@@ -222,19 +260,20 @@ function main(config) {
     { ...groupBaseOption, "name": "动画疯", "type": "select", "proxies": ["节点选择", ...regionGroups.filter(g => g.name.includes("台湾")).map(g => g.name)], "include-all": true, "filter": "(?i)台|tw|TW", "icon": "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/icon/Bahamut.svg" },
     { ...groupBaseOption, "name": "哔哩哔哩港澳台", "type": "select", "proxies": ["全局直连", "节点选择", "延迟选优", ...regionGroups.filter(g => g.name.includes("香港") || g.name.includes("台湾")).map(g => g.name)], "include-all": true, "filter": "^(?!.*(官网|套餐|流量|异常|剩余)).*$", "icon": "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/icon/bilibili.svg" },
     { ...groupBaseOption, "name": "Spotify", "type": "select", "proxies": ["节点选择", "延迟选优", ...regionGroups.map(g => g.name), "全局直连"], "include-all": true, "icon": "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/icon/spotify.svg" },
-    // 地区分组（保持在Spotify后）
+    // 插入地区分组（低倍率子组+高倍率子组+主组）
     ...regionGroupConfigs,
+    // 原有兜底分组（广告过滤、全局直连等，不变）
     { ...groupBaseOption, "name": "广告过滤", "type": "select", "proxies": ["REJECT", "DIRECT"], "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/bug.svg" },
     { ...groupBaseOption, "name": "全局直连", "type": "select", "proxies": ["DIRECT", "节点选择", "延迟选优", ...regionGroups.map(g => g.name)], "include-all": true, "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/link.svg" },
     { ...groupBaseOption, "name": "全局拦截", "type": "select", "proxies": ["REJECT", "DIRECT"], "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/block.svg" },
     { ...groupBaseOption, "name": "漏网之鱼", "type": "select", "proxies": ["节点选择", "延迟选优", ...regionGroups.map(g => g.name), "全局直连"], "include-all": true, "filter": "^(?!.*(官网|套餐|流量|异常|剩余)).*$", "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/fish.svg" }
   ];
 
-  // 覆盖规则集和规则
+  // 覆盖规则集和规则（不变）
   config["rule-providers"] = ruleProviders;
   config["rules"] = rules;
   
-  // 为所有节点启用UDP（保证视频、语音等功能）
+  // 为所有节点启用UDP（保证视频、语音功能）
   if (config["proxies"]) {
     config["proxies"].forEach(proxy => { proxy.udp = true; });
   }

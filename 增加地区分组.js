@@ -235,27 +235,27 @@ const regionGroups = [
   {
     name: "香港节点",
     filter: "(?i)香港|hk|HK",
-    icon: "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/flag-hk.svg"
+    icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png"
   },
   {
     name: "美国节点",
     filter: "(?i)美国|us|US|america",
-    icon: "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/flag-us.svg"
+    icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png"
   },
   {
     name: "日本节点",
     filter: "(?i)日本|jp|JP|japan",
-    icon: "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/flag-jp.svg"
+    icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png"
   },
   {
     name: "台湾节点",
     filter: "(?i)台湾|tw|TW",
-    icon: "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/flag-tw.svg"
+    icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/China.png"
   },
   {
     name: "新加坡节点",
     filter: "(?i)新加坡|sg|SG|singapore",
-    icon: "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/flag-sg.svg"
+    icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png"
   }
 ];
 

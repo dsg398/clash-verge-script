@@ -187,7 +187,7 @@ const ruleProviders = {
     ...ruleProviderCommon,
     "behavior": "classical",
     "url": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/rule/Twitter.txt",
-    "path": "./ruleset/xiaolin-007/Twitter.yaml"    
+    "path": "./ruleset/dsg398/Twitter.yaml"    
   },
    "Whatsapp": {
     ...ruleProviderCommon,

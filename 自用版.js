@@ -256,7 +256,7 @@ const main = (config) => {
   const socialGroups = createGroups([
     ["AI", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/OpenAI.png"],
     ["Telegram", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/Telegram.png"],
-    ["GitHub", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/GitHub.png"],
+    // 移除 GitHub 分组：["GitHub", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/GitHub.png"],
     ["YouTube", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/YouTube.png"],
     // 新增：Instagram 分组（图标+默认路由）
     ["Instagram", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/Instagram.png"],
@@ -370,7 +370,7 @@ const main = (config) => {
     ...cnAppGroups,
     ...regionGroups,
   ];
-  // 覆盖规则集（新增 Instagram、TikTok、Twitter、WhatsApp 的域名/IP 规则）
+  // 覆盖规则集（新增 Instagram、TikTok、Twitter、WhatsApp 的域名/IP 规则）- 移除 GitHub 规则集
   config["rule-providers"] = {
     "115": {
       ...ruleProviderCommon,
@@ -456,12 +456,8 @@ const main = (config) => {
       "url": "https://cdn.jsdmirror.com/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/OpenAI/OpenAI_OCD_IP.mrs",
       "path": "./ruleset/OpenAI_IP.mrs"
     },
-    "GitHub": {
-      ...ruleProviderCommon,
-      "behavior": "domain",
-      "url": "https://cdn.jsdmirror.com/gh/peiyingyao/Rule-for-OCD@master/rule/Clash/GitHub/GitHub_OCD_Domain.mrs",
-      "path": "./ruleset/GitHub_Domain.mrs"
-    },
+    // 移除 GitHub 域名规则集："GitHub": { ... }
+    // 移除 GitHub IP 规则集："GitHub-ip": { ... }
     // 新增：Instagram 域名规则集
     "Instagram": {
       ...ruleProviderCommon,
@@ -666,7 +662,7 @@ const main = (config) => {
     "SUB-RULE,(OR,((NETWORK,UDP),(NETWORK,TCP))),SUB-IP",
     "MATCH,Final"
   ];
-  // 覆盖子规则（新增四个分组的流量匹配逻辑）
+  // 覆盖子规则（新增四个分组的流量匹配逻辑）- 移除 GitHub 流量匹配规则
   config["sub-rules"] = {
     "SUB-REJECT": [
       "RULE-SET,BlockHttpDNS,REJECT-DROP",
@@ -708,7 +704,7 @@ const main = (config) => {
     ],
     "SUB-DOMAIN": [
       "OR,((RULE-SET,Telegram),(DOMAIN-KEYWORD,nicegram)),Telegram",
-      "OR,((RULE-SET,GitHub),(DOMAIN-KEYWORD,github)),GitHub",
+      // 移除 GitHub 流量匹配规则："OR,((RULE-SET,GitHub),(DOMAIN-KEYWORD,github)),GitHub",
       "OR,((RULE-SET,YouTube),(DOMAIN-KEYWORD,youtube)),YouTube",
       // 新增：Instagram 流量匹配（规则集+域名关键词）
       "OR,((RULE-SET,Instagram),(DOMAIN-KEYWORD,instagram),(DOMAIN-KEYWORD,instagr.am)),Instagram",

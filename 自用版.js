@@ -254,18 +254,18 @@ const main = (config) => {
   // ========== 定义所有分组 ==========
   // 1️⃣ 国际分组（新增 Instagram、TikTok、Twitter、WhatsApp 分组）
   const socialGroups = createGroups([
-    ["AI", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/OpenAI.png"],
-    ["Telegram", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/Telegram.png"],
+    ["AI", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/AI.png"],
+    ["Telegram", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/telegram.png"],
     // 移除 GitHub 分组：["GitHub", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/GitHub.png"],
-    ["YouTube", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/YouTube.png"],
+    ["YouTube", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Youtube.png"],
     // 新增：Instagram 分组（图标+默认路由）
-    ["Instagram", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/Instagram.png"],
+    ["Instagram", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Instagram.png"],
     // 新增：TikTok 分组（图标+默认路由）
-    ["TikTok", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/TikTok.png"],
+    ["TikTok", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/tiktok.png"],
     // 新增：Twitter 分组（图标+默认路由）
-    ["Twitter", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/Twitter.png"],
+    ["Twitter", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/X.png"],
     // 新增：WhatsApp 分组（图标+默认路由）
-    ["WhatsApp", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Whatsapp.svg"],
+    ["WhatsApp", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Whatsapp.png"],
     ["国际媒体", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/Pr_Media.png"],
   ]);
   // 2️⃣ 中国大陆 APP 分组
@@ -276,27 +276,27 @@ const main = (config) => {
   const regionGroups = [
     ...createRegionGroups({
       name: "香港",
-      icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png",
+      icon: "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/HK.png",
       filter: "(?i)🇭🇰|香港|(\\b(HK|Hong|HongKong)\\b)"
     }),
     ...createRegionGroups({
       name: "台湾",
-      icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/China.png",
+      icon: "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/TW.png",
       filter: "(?i)🇨🇳|🇹🇼|台湾|(\\b(TW|Tai|Taiwan)\\b)"
     }),
     ...createRegionGroups({
       name: "日本",
-      icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png",
+      icon: "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/JP.png",
       filter: "(?i)🇯🇵|日本|东京|(\\b(JP|Japan)\\b)"
     }),
     ...createRegionGroups({
       name: "新加坡",
-      icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png",
+      icon: "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/SG.png",
       filter: "(?i)🇸🇬|新加坡|狮|(\\b(SG|Singapore)\\b)"
     }),
     ...createRegionGroups({
       name: "美国",
-      icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png",
+      icon: "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/US.png",
       filter: "(?i)🇺🇸|美国|洛杉矶|圣何塞|(\\b(US|United States|America)\\b)"
     }),
   ];
@@ -306,14 +306,14 @@ const main = (config) => {
       name: "Final",
       type: "select",
       proxies: ["节点选择", "DIRECT"],
-      icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Final.png"
+      icon: "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Final.png"
     },
     {
       ...groupBaseOption,
       "name": "节点选择",
       "type": "select",
       "proxies": ["自动选择", "自动回退", "全部节点", "负载均衡", "DIRECT", "香港节点", "香港自动", "香港回退", "香港均衡", "台湾节点", "台湾自动", "台湾回退", "台湾均衡", "日本节点", "日本自动", "日本回退", "日本均衡", "新加坡节点", "新加坡自动", "新加坡回退", "新加坡均衡", "美国节点", "美国自动", "美国回退", "美国均衡"],
-      "icon": "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Rocket.png"
+      "icon": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Rocket.png"
     },
     {
       ...groupBaseOption,
@@ -323,7 +323,7 @@ const main = (config) => {
       "include-all": true,
       "filter": "",
       "exclude-filter": EX_INFO,
-      "icon": "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Airport.png"
+      "icon": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Airport.png"
     },
     // 自动选择组
     {

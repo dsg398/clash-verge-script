@@ -416,7 +416,7 @@ function createRegionGroups({ name, icon, filter }) {
       ...groupBaseOption,
       "name": "节点选择",
       "type": "select",
-      "proxies": ["自动选择", "全部节点", "DIRECT", "香港节点", "台湾节点", "日本节点", "新加坡节点", "美国节点"],
+      "proxies": ["自动选择", "自动回退", "全部节点", "DIRECT", "香港节点", "台湾节点", "日本节点", "新加坡节点", "美国节点"],
       "icon": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Rocket.png"
     },
     {

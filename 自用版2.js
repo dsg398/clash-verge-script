@@ -367,6 +367,7 @@ function createRegionGroups({ name, icon, filter }) {
     ["Twitter", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/X.png"],
     ["WhatsApp", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Whatsapp.png"],
     ["YouTube", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Youtube.png"],
+    ["Google", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Google.png"],
     ["国际媒体", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/Pr_Media.png"],
   ]);
 
@@ -675,6 +676,18 @@ function createRegionGroups({ name, icon, filter }) {
       "url": "https://cdn.jsdmirror.com/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.mrs",
       "path": "./ruleset/Telegram_IP.mrs"
     },
+     "Google": {
+      ...ruleProviderCommon,
+      "behavior": "domain",
+      "url": "https://cdn.jsdmirror.com/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.mrs",
+      "path": "./ruleset/Google_Domain.mrs"
+    },
+    "Google-ip": {
+      ...ruleProviderCommon,
+      "behavior": "ipcidr",
+      "url": "https://cdn.jsdmirror.com/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.mrs",
+      "path": "./ruleset/Google_IP.mrs"
+    },
     "CN-ip": {
       ...ruleProviderCommon,
       "behavior": "ipcidr",
@@ -733,6 +746,8 @@ function createRegionGroups({ name, icon, filter }) {
       "OR,((RULE-SET,YouTube),(DOMAIN-KEYWORD,youtube)),YouTube",
       "OR,((RULE-SET,Claude),(RULE-SET,OpenAI),(RULE-SET,Gemini),(AND,((RULE-SET,Copilot),(NOT,((DOMAIN,www.bing.com))))),(DOMAIN-KEYWORD,openai),(DOMAIN-KEYWORD,openaicom-api),(DOMAIN-KEYWORD,colab),(DOMAIN-KEYWORD,developerprofiles),(DOMAIN-KEYWORD,generativelanguage)),AI",
       "OR,((RULE-SET,Twitter),(DOMAIN-KEYWORD,twitter)),Twitter",
+      "OR,((RULE-SET,Google),(DOMAIN-KEYWORD,google)),Twitter",
+      "RULE-SET,Google,Google",
       "RULE-SET,GlobalMedia,国际媒体",
       "RULE-SET,ChinaMedia,国内媒体",
     ],
@@ -745,6 +760,7 @@ function createRegionGroups({ name, icon, filter }) {
       "RULE-SET,Copilot-ip,AI,no-resolve",
       "RULE-SET,OpenAI-ip,AI,no-resolve",
       "RULE-SET,Twitter-ip,Twitter,no-resolve",
+      "RULE-SET,Google-ip,Google,no-resolve",
       "RULE-SET,YouTube-ip,YouTube,no-resolve",
       "RULE-SET,GlobalMedia-ip,国际媒体,no-resolve",
     ]

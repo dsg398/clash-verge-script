@@ -292,7 +292,7 @@ function main(config) {
       "include-all": true,
       "filter": "(?i)🇸🇬|新加坡|狮|(\\b(SG|Singapore)\\b)",
       "icon": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/SG.png"
-    }  
+    },
     {
       ...groupBaseOption,
       "name": "台湾",
@@ -301,7 +301,7 @@ function main(config) {
       "include-all": true,
       "filter": "(?i)🇨🇳|🇹🇼|台湾|(\\b(TW|Tai|Taiwan)\\b",
       "icon": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/TW.png"
-    }  
+    }, 
     // 其他基础组
     {
       ...groupBaseOption,

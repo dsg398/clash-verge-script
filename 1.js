@@ -9,7 +9,6 @@ const foreignNameservers = [
   "https://77.88.8.8/dns-query", //YandexDNS
   "https://1.1.1.1/dns-query", // CloudflareDNS
   "https://8.8.4.4/dns-query", // GoogleDNS  
-
 ];
 // DNS配置
 const dnsConfig = {
@@ -23,30 +22,25 @@ const dnsConfig = {
   "enhanced-mode": "fake-ip",
   "fake-ip-range": "198.18.0.1/16",
   "fake-ip-filter": [
-    // 本地主机/设备
     "+.lan",
     "+.local",
-    // // Windows网络出现小地球图标
     "+.msftconnecttest.com",
     "+.msftncsi.com",
-    // QQ快速登录检测失败
     "localhost.ptlogin2.qq.com",
     "localhost.sec.qq.com",
-      // 追加以下条目
     "+.in-addr.arpa", 
     "+.ip6.arpa",
     "time.*.com",
     "time.*.gov",
     "pool.ntp.org",
-    // 微信快速登录检测失败
     "localhost.work.weixin.qq.com"
   ],
-  "default-nameserver": ["223.5.5.5","1.2.4.8"],//可修改成自己ISP的DNS
+  "default-nameserver": ["223.5.5.5","1.2.4.8"],
   "nameserver": [...foreignNameservers],
   "proxy-server-nameserver":[...domesticNameservers],
   "direct-nameserver":[...domesticNameservers],
   "nameserver-policy": {
-  "geosite:private,cn": domesticNameservers
+    "geosite:private,cn": domesticNameservers
   }
 };
 // 规则集通用配置
@@ -180,13 +174,11 @@ const ruleProviders = {
 };
 // 规则
 const rules = [
-  // 自定义规则
-  "DOMAIN-SUFFIX,googleapis.cn,节点选择", // Google服务
-  "DOMAIN-SUFFIX,gstatic.com,节点选择", // Google静态资源
-  "DOMAIN-SUFFIX,xn--ngstr-lra8j.com,节点选择", // Google Play下载服务
-  "DOMAIN-SUFFIX,github.io,节点选择", // Github Pages
-  "DOMAIN,v2rayse.com,节点选择", // V2rayse节点工具
-  // Loyalsoldier 规则集
+  "DOMAIN-SUFFIX,googleapis.cn,节点选择",
+  "DOMAIN-SUFFIX,gstatic.com,节点选择",
+  "DOMAIN-SUFFIX,xn--ngstr-lra8j.com,节点选择",
+  "DOMAIN-SUFFIX,github.io,节点选择",
+  "DOMAIN,v2rayse.com,节点选择",
   "RULE-SET,applications,全局直连",
   "RULE-SET,private,全局直连",
   "RULE-SET,reject,广告过滤",
@@ -207,7 +199,6 @@ const rules = [
   "RULE-SET,lancidr,全局直连,no-resolve",
   "RULE-SET,cncidr,全局直连,no-resolve",
   "RULE-SET,telegramcidr,电报消息,no-resolve",
-  // 其他规则
   "GEOSITE,CN,全局直连",
   "GEOIP,LAN,全局直连,no-resolve",
   "GEOIP,CN,全局直连,no-resolve",
@@ -223,6 +214,45 @@ const groupBaseOption = {
   "hidden": false
 };
 
+// 杂项/高倍率过滤表达式（可根据需要调整）
+const EX_INFO = "(?i)群|邀请|返利|循环|建议|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|剩余|(\\b(USE|USED|TOTAL|Traffic|Expire|EMAIL|Panel|Channel|Author)\\b|\\d{4}-\\d{2}-\\d{2}|\\d+G)";
+const EX_RATE = "高倍|高倍率|倍率[2-9]|x[2-9]\\.?\\d*|\\([xX][2-9]\\.?\\d*\\)|\\[[xX][2-9]\\.?\\d*\\]|\\{[xX][2-9]\\.?\\d*\\}|（[xX][2-9]\\.?\\d*）|【[xX][2-9]\\.?\\d*】|【[2-9]x】|【\\d+[xX]】";
+const EX_ALL = `${EX_INFO}|${EX_RATE}`;
+
+// 地区分组工厂函数
+function createRegionGroups({ name, icon, filter }) {
+  const subNames = ["自动", "回退"];
+  const proxies = subNames.map(s => `${name}${s}`);
+  return [
+    {
+      ...groupBaseOption,
+      name: `${name}节点`,
+      type: "select",
+      proxies,
+      filter,
+      icon
+    },
+    {
+      ...groupBaseOption,
+      name: `${name}自动`,
+      type: "url-test",
+      hidden: true,
+      filter,
+      "exclude-filter": EX_ALL,
+      icon
+    },
+    {
+      ...groupBaseOption,
+      name: `${name}回退`,
+      type: "fallback",
+      hidden: true,
+      filter,
+      "exclude-filter": EX_INFO,
+      icon
+    }
+  ];
+}
+
 // 程序入口
 function main(config) {
   const proxyCount = config?.proxies?.length ?? 0;
@@ -235,7 +265,36 @@ function main(config) {
   // 覆盖原配置中DNS配置
   config["dns"] = dnsConfig;
 
-  // 覆盖原配置中的代理组
+  // 地区分组定义
+  const regionGroups = [
+    ...createRegionGroups({
+      name: "香港",
+      icon: "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/icon/hk.svg",
+      filter: "(?i)🇭🇰|香港|(\\b(HK|Hong|HongKong)\\b)"
+    }),
+    ...createRegionGroups({
+      name: "台湾",
+      icon: "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/icon/tw.svg",
+      filter: "(?i)🇨🇳|🇹🇼|台湾|(\\b(TW|Tai|Taiwan)\\b)"
+    }),
+    ...createRegionGroups({
+      name: "日本",
+      icon: "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/icon/jp.svg",
+      filter: "(?i)🇯🇵|日本|东京|(\\b(JP|Japan)\\b)"
+    }),
+    ...createRegionGroups({
+      name: "新加坡",
+      icon: "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/icon/sg.svg",
+      filter: "(?i)🇸🇬|新加坡|狮|(\\b(SG|Singapore)\\b)"
+    }),
+    ...createRegionGroups({
+      name: "美国",
+      icon: "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/icon/us.svg",
+      filter: "(?i)🇺🇸|美国|洛杉矶|圣何塞|(\\b(US|United States|America)\\b)"
+    }),
+  ];
+
+  // 原先的代理组 + 地区分组
   config["proxy-groups"] = [
     {
       ...groupBaseOption,
@@ -365,21 +424,18 @@ function main(config) {
       "include-all": true,
       "filter": "^(?!.*(官网|套餐|流量|异常|剩余)).*$",
       "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/fish.svg"
-    }
+    },
+    ...regionGroups  // 添加地区分组
   ];
 
   // 覆盖原配置中的规则
   config["rule-providers"] = ruleProviders;
   config["rules"] = rules;
-// 添加判断
+
   if(config["proxies"]) {
     config["proxies"].forEach(proxy => {
-      // 为每个节点设置 udp = true
       proxy.udp = true
-
     })
   }
-  // 返回修改后的配置
   return config;
-
 }

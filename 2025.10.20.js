@@ -299,7 +299,7 @@ function main(config) {
       "type": "select",
       "proxies": ["自动选择", "自动回退", "节点选择", "全局直连"],
       "include-all": true,
-      "filter": "(?i)🇨🇳|🇹🇼|台湾|(\\b(TW|Tai|Taiwan)\\b",
+      "filter": "(?i)🇨🇳|🇹🇼|台湾|(\\b(TW|Tai|Taiwan)\\b)",
       "icon": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/TW.png"
     }, 
     // 其他基础组

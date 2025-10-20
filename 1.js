@@ -154,6 +154,8 @@ function createRegionGroups({ name, icon, filter }) {
       hidden: true,
       filter: regionFilter, 
       "exclude-filter": excludeForAutoGroups,
+      proxies: [], // 新增：为自动选择组添加代理列表容器
+      "include-all": true, // 自动包含所有符合filter的代理
       icon
     },
     // 3. FALLBACK 组 (自动回退) - 仅排除杂项 (EX_INFO)
@@ -164,6 +166,8 @@ function createRegionGroups({ name, icon, filter }) {
       hidden: true,
       filter: regionFilter,
       "exclude-filter": excludeForFallback,
+      proxies: [], // 新增：为回退组添加代理列表容器
+      "include-all": true, // 自动包含所有符合filter的代理
       icon
     },
     // 4. LOAD-BALANCE 组 (负载均衡) - 排除所有 (EX_ALL)
@@ -174,6 +178,9 @@ function createRegionGroups({ name, icon, filter }) {
       hidden: true,
       filter: regionFilter,
       "exclude-filter": excludeForAutoGroups,
+      proxies: [], // 关键修复：添加proxies配置
+      "include-all": true, // 自动包含所有符合filter的代理（解决缺少代理列表的问题）
+      "strategy": "round-robin", // 可选：添加负载均衡策略（轮询/哈希等）
       icon
     }
   ];

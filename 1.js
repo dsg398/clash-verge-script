@@ -221,7 +221,6 @@ const EX_ALL = `${EX_INFO}|${EX_RATE}`;
 
 // 地区分组工厂函数
 function createRegionGroups({ name, icon, filter }) {
-  // 自动/回退组必须有 proxies 字段，否则会报错
   return [
     {
       ...groupBaseOption,
@@ -294,8 +293,8 @@ function main(config) {
       name: "美国",
       icon: "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/icon/us.svg",
       filter: "(?i)🇺🇸|美国|洛杉矶|圣何塞|(\\b(US|United States|America)\\b)"
-    }),
-  ];
+    })
+  ].flat(); // 保证是扁平数组
 
   // 原先的代理组 + 地区分组
   config["proxy-groups"] = [
@@ -437,8 +436,8 @@ function main(config) {
 
   if(config["proxies"]) {
     config["proxies"].forEach(proxy => {
-      proxy.udp = true
-    })
+      proxy.udp = true;
+    });
   }
   return config;
 }

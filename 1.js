@@ -15,7 +15,7 @@ const foreignNameservers = [
 // 排除规则配置（过滤无效/低质节点）
 // EX_INFO：过滤含杂项信息的节点（如官网、返利、流量提示等）
 const EX_INFO = [
-  "(?i)群|邀请|返利|循环|建议|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内",
+  "(?i)群|邀请|返利|循环|建议|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内"[...]
   "剩余|(\\b(USE|USED|TOTAL|Traffic|Expire|EMAIL|Panel|Channel|Author)\\b|\\d{4}-\\d{2}-\\d{2}|\\d+G)"
 ].join('|');
 
@@ -79,10 +79,10 @@ const ruleProviders = {
   private: { ...ruleProviderCommon, behavior: "domain", url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt", path: "./ruleset/loyalsoldier/private.yaml" },
   gfw: { ...ruleProviderCommon, behavior: "domain", url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt", path: "./ruleset/loyalsoldier/gfw.yaml" },
   "tld-not-cn": { ...ruleProviderCommon, behavior: "domain", url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt", path: "./ruleset/loyalsoldier/tld-not-cn.yaml" },
-  telegramcidr: { ...ruleProviderCommon, behavior: "ipcidr", url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt", path: "./ruleset/loyalsoldier/telegramcidr.yaml" },
+  telegramcidr: { ...ruleProviderCommon, behavior: "ipcidr", url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt", path: "./ruleset/loyalsoldier/telegramcidr.yaml" }[...]
   cncidr: { ...ruleProviderCommon, behavior: "ipcidr", url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt", path: "./ruleset/loyalsoldier/cncidr.yaml" },
   lancidr: { ...ruleProviderCommon, behavior: "ipcidr", url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt", path: "./ruleset/loyalsoldier/lancidr.yaml" },
-  applications: { ...ruleProviderCommon, behavior: "classical", url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt", path: "./ruleset/loyalsoldier/applications.yaml" },
+  applications: { ...ruleProviderCommon, behavior: "classical", url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt", path: "./ruleset/loyalsoldier/applications.yaml[...]
   bahamut: { ...ruleProviderCommon, behavior: "classical", url: "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/rule/Bahamut.txt", path: "./ruleset/xiaolin-007/bahamut.yaml" },
   YouTube: { ...ruleProviderCommon, behavior: "classical", url: "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/rule/YouTube.txt", path: "./ruleset/xiaolin-007/YouTube.yaml" },
   Netflix: { ...ruleProviderCommon, behavior: "classical", url: "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/rule/Netflix.txt", path: "./ruleset/xiaolin-007/Netflix.yaml" },
@@ -433,4 +433,11 @@ function main(config) {
   return config;
 }
 
-module.exports = { main };
+// 兼容性导出：支持 CommonJS / AMD / 浏览器全局（避免在无 module 环境抛错）
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { main };
+} else if (typeof define === 'function' && define.amd) {
+  define(() => ({ main }));
+} else {
+  globalThis.clashVergeMain = main;
+}

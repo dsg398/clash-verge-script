@@ -1,21 +1,25 @@
-// 国内DNS服务器
+// 国内DNS服务器（阿里、腾讯DoH，适配国内网络）
 const domesticNameservers = [
   "https://223.5.5.5/dns-query", // 阿里DoH
-  "https://doh.pub/dns-query" // 腾讯DoH
-];
-// 国外DNS服务器
-const foreignNameservers = [
-  "https://208.67.222.222/dns-query", // OpenDNS
-  "https://77.88.8.8/dns-query", // YandexDNS
-  "https://1.1.1.1/dns-query", // CloudflareDNS
-  "https://8.8.4.4/dns-query", // GoogleDNS  
+  "https://doh.pub/dns-query"    // 腾讯DoH
 ];
 
-// 排除规则配置
+// 国外DNS服务器（OpenDNS、Yandex等，适配国际网络）
+const foreignNameservers = [
+  "https://208.67.222.222/dns-query", // OpenDNS
+  "https://77.88.8.8/dns-query",      // YandexDNS
+  "https://1.1.1.1/dns-query",        // CloudflareDNS
+  "https://8.8.4.4/dns-query"         // GoogleDNS  
+];
+
+// 排除规则配置（过滤无效/低质节点）
+// EX_INFO：过滤含杂项信息的节点（如官网、返利、流量提示等）
 const EX_INFO = [
   "(?i)群|邀请|返利|循环|建议|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入",
   "剩余|(\\b(USE|USED|TOTAL|Traffic|Expire|EMAIL|Panel|Channel|Author)\\b|\\d{4}-\\d{2}-\\d{2}|\\d+G)"
 ].join('|');
+
+// EX_RATE：过滤高倍率/限速节点（如x2、高倍率等）
 const EX_RATE = [
   "高倍|高倍率|倍率[2-9]",
   "x[2-9]\\.?\\d*",
@@ -27,20 +31,22 @@ const EX_RATE = [
   "【[2-9]x】",
   "【\\d+[xX]】"
 ].join('|');
+
+// EX_ALL：合并所有排除规则（用于自动选择/负载均衡分组）
 const EX_ALL = `${EX_INFO}|${EX_RATE}`;
 
-// DNS配置
+// DNS配置（防泄露+智能分流）
 const dnsConfig = {
-  "enable": true,
-  "listen": "0.0.0.0:1053",
-  "ipv6": false,
-  "prefer-h3": false,
-  "respect-rules": true,
-  "use-system-hosts": false,
-  "cache-algorithm": "arc",
-  "enhanced-mode": "fake-ip",
-  "fake-ip-range": "198.18.0.1/16",
-  "fake-ip-filter": [
+  "enable": true,                  // 启用DNS
+  "listen": "0.0.0.0:1053",        // DNS监听地址
+  "ipv6": false,                   // 关闭IPv6（避免部分网络兼容问题）
+  "prefer-h3": false,              // 不优先HTTP/3
+  "respect-rules": true,           // 尊重分流规则
+  "use-system-hosts": false,       // 不使用系统hosts
+  "cache-algorithm": "arc",        // 缓存算法（ARC）
+  "enhanced-mode": "fake-ip",      // 启用Fake-IP模式（防DNS泄露）
+  "fake-ip-range": "198.18.0.1/16",// Fake-IP网段
+  "fake-ip-filter": [              // Fake-IP例外（避免本地服务异常）
     "+.lan", "+.local",
     "+.msftconnecttest.com", "+.msftncsi.com",
     "localhost.ptlogin2.qq.com", "localhost.sec.qq.com",
@@ -48,17 +54,21 @@ const dnsConfig = {
     "time.*.com", "time.*.gov", "pool.ntp.org",
     "localhost.work.weixin.qq.com"
   ],
-  "default-nameserver": ["223.5.5.5", "1.2.4.8"],
-  "nameserver": [...foreignNameservers],
-  "proxy-server-nameserver": [...domesticNameservers],
-  "direct-nameserver": [...domesticNameservers],
-  "nameserver-policy": { "geosite:private,cn": domesticNameservers }
+  "default-nameserver": ["223.5.5.5", "1.2.4.8"], // 默认DNS（国内）
+  "nameserver": [...foreignNameservers],          // 国际网络DNS
+  "proxy-server-nameserver": [...domesticNameservers], // 代理流量DNS（国内）
+  "direct-nameserver": [...domesticNameservers],  // 直连流量DNS（国内）
+  "nameserver-policy": { "geosite:private,cn": domesticNameservers } // 国内域名用国内DNS
 };
 
-// 规则集通用配置+规则集配置
+// 规则集通用配置（HTTP拉取+每日更新）
 const ruleProviderCommon = {
-  "type": "http", "format": "yaml", "interval": 86400
+  "type": "http",    // 拉取方式
+  "format": "yaml",  // 规则格式
+  "interval": 86400  // 更新间隔（86400秒=1天）
 };
+
+// 规则集配置（分流核心：按服务/域名分类）
 const ruleProviders = {
   "reject": { ...ruleProviderCommon, "behavior": "domain", "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt", "path": "./ruleset/loyalsoldier/reject.yaml" },
   "icloud": { ...ruleProviderCommon, "behavior": "domain", "url": "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt", "path": "./ruleset/loyalsoldier/icloud.yaml" },
@@ -82,62 +92,76 @@ const ruleProviders = {
   "TikTok": { ...ruleProviderCommon, "behavior": "classical", "url": "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/rule/TikTok.txt", "path": "./ruleset/xiaolin-007/TikTok.yaml" }
 };
 
-// 规则
+// 分流规则（按优先级排序：特殊域名→规则集→地理信息→默认匹配）
 const rules = [
+  // 特殊域名：强制走节点选择（避免国内节点无法访问）
   "DOMAIN-SUFFIX,googleapis.cn,节点选择",
   "DOMAIN-SUFFIX,gstatic.com,节点选择",
   "DOMAIN-SUFFIX,xn--ngstr-lra8j.com,节点选择",
   "DOMAIN-SUFFIX,github.io,节点选择",
   "DOMAIN,v2rayse.com,节点选择",
+  
+  // 应用/私有域名：直连（减少延迟）
   "RULE-SET,applications,全局直连",
   "RULE-SET,private,全局直连",
+  
+  // 广告/垃圾域名：拦截
   "RULE-SET,reject,广告过滤",
-  "RULE-SET,icloud,微软服务",
+  
+  // 苹果服务：走苹果服务分组（修正原“微软服务”错误）
+  "RULE-SET,icloud,苹果服务",
   "RULE-SET,apple,苹果服务",
+  
+  // 视频/社交平台：专属分组
   "RULE-SET,YouTube,YouTube",
   "RULE-SET,Netflix,Netflix",
-  "RULE-SET,bahamut,动画疯",
+  "RULE-SET,bahamut,动画疯",    // 新增“动画疯”分组匹配
   "RULE-SET,Spotify,Spotify",
   "RULE-SET,BilibiliHMT,哔哩哔哩港澳台",
   "RULE-SET,AI,AI",
   "RULE-SET,TikTok,TikTok",
+  
+  // 谷歌/国际代理域名：走对应分组
   "RULE-SET,google,谷歌服务",
   "RULE-SET,proxy,节点选择",
   "RULE-SET,gfw,节点选择",
   "RULE-SET,tld-not-cn,节点选择",
+  
+  // 直连域名/局域网/国内IP：直连
   "RULE-SET,direct,全局直连",
   "RULE-SET,lancidr,全局直连,no-resolve",
   "RULE-SET,cncidr,全局直连,no-resolve",
+  
+  // 电报IP段：走电报消息分组
   "RULE-SET,telegramcidr,电报消息,no-resolve",
+  
+  // 国内域名/IP：直连
   "GEOSITE,CN,全局直连",
   "GEOIP,LAN,全局直连,no-resolve",
   "GEOIP,CN,全局直连,no-resolve",
+  
+  // 默认匹配：走漏网之鱼分组
   "MATCH,漏网之鱼"
 ];
 
-// 代理组通用配置
+// 代理组通用配置（基础测试/超时参数）
 const groupBaseOption = {
-  "interval": 300,
-  "timeout": 3000,
-  "url": "https://www.google.com/generate_204",
-  "lazy": true,
-  "max-failed-times": 3,
-  "hidden": false
+  "interval": 300,         // 节点延迟测试间隔（300秒=5分钟）
+  "timeout": 3000,         // 测试超时时间（3000毫秒=3秒）
+  "url": "https://www.google.com/generate_204", // 测试URL（谷歌204响应）
+  "lazy": true,            // 懒加载（仅使用时测试节点）
+  "max-failed-times": 3,   // 最大失败次数（超过则标记节点不可用）
+  "hidden": false          // 默认显示分组（子分组会手动设为hidden）
 };
 
-// 工厂函数：生成地区分组（四种类型）
+// 工厂函数：生成地区分组（含手动选择/自动选择/回退/负载均衡）
 function createRegionGroups({ name, icon, filter }) {
-  const subNames = ["自动", "回退", "均衡"];
-  const proxies = subNames.map(s => `${name}${s}`);
-  const regionFilter = filter;
+  const subNames = ["自动", "回退", "均衡"]; // 子分组后缀
+  const proxies = subNames.map(s => `${name}${s}`); // 子分组名称列表
+  const regionFilter = filter; // 地区节点过滤正则（如匹配“香港”节点）
   
-  // 自动选择/负载均衡 排除所有 (EX_INFO | EX_RATE)
-  const excludeForAutoGroups = EX_ALL; 
-  // 自动回退 仅排除杂项 (EX_INFO)
-  const excludeForFallback = EX_INFO; 
-
   return [
-    // 1. SELECT 组 (手动选择) - 只做地区过滤
+    // 1. 手动选择分组（用户手动切换地区节点）
     {
       ...groupBaseOption,
       name: `${name}节点`,
@@ -146,82 +170,84 @@ function createRegionGroups({ name, icon, filter }) {
       filter: regionFilter,
       icon
     },
-    // 2. URL-TEST 组 (自动选择) - 排除所有 (EX_ALL)
+    // 2. 自动选择分组（按延迟选最优节点，过滤无效节点）
     {
       ...groupBaseOption,
       name: `${name}自动`,
       type: "url-test",
-      hidden: true,
-      filter: regionFilter, 
-      "exclude-filter": excludeForAutoGroups,
-      proxies: [], // 新增：为自动选择组添加代理列表容器
-      "include-all": true, // 自动包含所有符合filter的代理
+      hidden: true,          // 隐藏（通过“地区节点”分组间接调用）
+      filter: regionFilter,
+      "exclude-filter": EX_ALL, // 过滤杂项+高倍率节点
+      proxies: [],           // 空列表+include-all=true：自动匹配所有符合filter的节点
+      "include-all": true,
       icon
     },
-    // 3. FALLBACK 组 (自动回退) - 仅排除杂项 (EX_INFO)
+    // 3. 自动回退分组（节点故障时自动切换，仅过滤杂项）
     {
       ...groupBaseOption,
       name: `${name}回退`,
       type: "fallback",
       hidden: true,
       filter: regionFilter,
-      "exclude-filter": excludeForFallback,
-      proxies: [], // 新增：为回退组添加代理列表容器
-      "include-all": true, // 自动包含所有符合filter的代理
+      "exclude-filter": EX_INFO, // 仅过滤杂项节点（保留高倍率应急）
+      proxies: [],
+      "include-all": true,
       icon
     },
-    // 4. LOAD-BALANCE 组 (负载均衡) - 排除所有 (EX_ALL)
+    // 4. 负载均衡分组（多节点分摊流量，过滤无效节点）
     {
       ...groupBaseOption,
       name: `${name}均衡`,
       type: "load-balance",
       hidden: true,
       filter: regionFilter,
-      "exclude-filter": excludeForAutoGroups,
-      proxies: [], // 关键修复：添加proxies配置
-      "include-all": true, // 自动包含所有符合filter的代理（解决缺少代理列表的问题）
-      "strategy": "round-robin", // 可选：添加负载均衡策略（轮询/哈希等）
+      "exclude-filter": EX_ALL,
+      proxies: [],
+      "include-all": true,
+      "strategy": "round-robin", // 负载均衡策略（轮询）
       icon
     }
   ];
 }
 
-// 工厂函数：生成应用分组
+// 工厂函数：生成应用分组（适配不同服务的专属分组）
 function createAppGroups(groups) {
   return groups.map(groupArgs => {
     let [name, icon, type, proxiesOrExtra, extra] = groupArgs;
     
-    // 参数修正逻辑
+    // 参数修正：处理可选参数的默认值
     if (typeof type !== 'string') {
       extra = proxiesOrExtra;
       proxiesOrExtra = type;
-      type = 'select';
+      type = 'select'; // 默认分组类型为“手动选择”
     }
-    if (!type) {
-      type = 'select';
-    }
-
+    if (!type) type = 'select';
+    
     let proxies;
     let extraOptions = extra || {};
-
-    // 国际节点列表
+    
+    // 基础国际节点列表（默认应用分组的可选节点）
     const baseProxies = [
       "节点选择", "香港节点", "台湾节点", "日本节点", 
       "新加坡节点", "美国节点", "全部节点", 
       "负载均衡", "自动选择", "自动回退", "DIRECT"
     ];
-
+    
+    // 处理proxies参数（支持数组/布尔值/对象）
     if (Array.isArray(proxiesOrExtra)) {
-      proxies = proxiesOrExtra;
+      proxies = proxiesOrExtra; // 自定义节点列表
     } else if (typeof proxiesOrExtra === 'boolean') {
-      // 可用于国内应用分组
-      proxies = proxiesOrExtra ? ["DIRECT", "节点选择", "香港节点", "台湾节点"] : baseProxies;
+      // 布尔值：true=国内应用（优先直连），false=国际应用（默认列表）
+      proxies = proxiesOrExtra 
+        ? ["DIRECT", "节点选择", "香港节点", "台湾节点"] 
+        : baseProxies;
     } else if (proxiesOrExtra && typeof proxiesOrExtra === 'object') {
-      proxies = proxiesOrExtra.proxies;
+      proxies = proxiesOrExtra.proxies; // 对象形式传参
       extraOptions = { ...proxiesOrExtra, ...extraOptions };
-      delete extraOptions.proxies;
+      delete extraOptions.proxies; // 移除proxies，避免重复
     }
-
+    
+    // 生成应用分组配置
     const groupConfig = {
       ...groupBaseOption,
       name,
@@ -230,25 +256,29 @@ function createAppGroups(groups) {
       proxies: proxies || baseProxies,
       ...extraOptions,
     };
-
-    // 注入排除过滤器
+    
+    // 注入默认排除规则（未指定时过滤杂项节点）
     if (!groupConfig["exclude-filter"]) {
       groupConfig["exclude-filter"] = EX_INFO;
     }
-
+    
     return groupConfig;
   });
 }
 
-// 程序入口
+// 程序入口：整合所有配置，生成最终Clash配置
 function main(config) {
+  // 校验：确保配置中有代理节点或代理提供商
   const proxyCount = config?.proxies?.length ?? 0;
-  const proxyProviderCount = typeof config?.["proxy-providers"] === "object" ? Object.keys(config["proxy-providers"]).length : 0;
+  const proxyProviderCount = typeof config?.["proxy-providers"] === "object" 
+    ? Object.keys(config["proxy-providers"]).length 
+    : 0;
+  
   if (proxyCount === 0 && proxyProviderCount === 0) {
-    throw new Error("配置文件中未找到任何代理");
+    throw new Error("配置文件中未找到任何代理节点或代理提供商，请检查上游订阅！");
   }
 
-  // 地区分组
+  // 1. 生成地区分组（香港/台湾/日本/新加坡/美国）
   const regionGroups = [
     ...createRegionGroups({
       name: "香港",
@@ -277,27 +307,26 @@ function main(config) {
     }),
   ];
 
-  // 应用分组
+  // 2. 生成应用分组（AI/社交/媒体等）- 已删除重复的“YouTube”
   const appGroups = createAppGroups([
     ["AI", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/AI.png"],
     ["Telegram", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/telegram.png"],
-    ["YouTube", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Youtube.png"],
     ["Instagram", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Instagram.png"],
     ["TikTok", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/tiktok.png"],
     ["Twitter", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/X.png"],
     ["WhatsApp", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Whatsapp.png"],
     ["国际媒体", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/Pr_Media.png"],
-    ["国内媒体", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/CN_Media.png", true],
+    ["国内媒体", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/CN_Media.png", true], // 国内应用：优先直连
   ]);
 
-  // 全局自动组：自动选择（url-test）和自动回退（fallback）
+  // 3. 生成全局自动分组（跨地区自动选择/回退/负载均衡）
   const globalAutoGroups = [
     {
       ...groupBaseOption,
       "name": "自动选择",
       "type": "url-test",
-      "interval": 120,
-      "tolerance": 200,
+      "interval": 120,        // 缩短测试间隔（120秒=2分钟，更快响应节点变化）
+      "tolerance": 200,       // 延迟容忍值（200毫秒，避免频繁切换）
       "proxies": [
         "香港自动", "台湾自动", "日本自动", 
         "新加坡自动", "美国自动"
@@ -325,6 +354,7 @@ function main(config) {
         "新加坡均衡", "美国均衡"
       ],
       "exclude-filter": EX_ALL,
+      "strategy": "round-robin",
       "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/balance.svg"
     },
     {
@@ -340,7 +370,7 @@ function main(config) {
     }
   ];
 
-  // 主代理组
+  // 4. 生成主代理分组（核心分流入口，新增“微软服务”“动画疯”）
   const mainProxyGroups = [
     {
       ...groupBaseOption,
@@ -384,6 +414,30 @@ function main(config) {
     },
     {
       ...groupBaseOption,
+      "name": "苹果服务",
+      "type": "select",
+      "proxies": ["自动选择", "自动回退", "节点选择", "全局直连"],
+      "include-all": true,
+      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/apple.svg"
+    },
+    {
+      ...groupBaseOption,
+      "name": "微软服务", // 新增微软服务分组（避免后续引用缺失）
+      "type": "select",
+      "proxies": ["自动选择", "自动回退", "节点选择", "全局直连"],
+      "include-all": true,
+      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/microsoft.svg"
+    },
+    {
+      ...groupBaseOption,
+      "name": "动画疯", // 新增动画疯分组（匹配bahamut规则集）
+      "type": "select",
+      "proxies": ["自动选择", "自动回退", "节点选择", "全局直连"],
+      "include-all": true,
+      "icon": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/bahamut.png"
+    },
+    {
+      ...groupBaseOption,
       "name": "全局直连",
       "type": "select",
       "proxies": ["DIRECT"],
@@ -405,26 +459,26 @@ function main(config) {
     }
   ];
 
-  // 合并所有分组
+  // 5. 合并所有分组（关键：先加载被引用的分组，避免“未找到”错误）
   const allGroups = [
-    ...globalAutoGroups,
-    ...regionGroups,
-    ...appGroups,
-    ...mainProxyGroups.filter(g => !["节点选择", "YouTube", "Netflix"].includes(g.name)) // 避免重复
+    ...regionGroups,          // 1. 先加载地区分组（被全局自动组引用）
+    ...globalAutoGroups,      // 2. 再加载全局自动组（被主分组引用）
+    ...appGroups,             // 3. 然后加载应用分组
+    ...mainProxyGroups.filter(g => !["节点选择", "YouTube", "Netflix"].includes(g.name)) // 4. 最后加载主分组（过滤重复项）
   ];
 
-  // 更新配置
+  // 6. 更新最终配置（注入DNS、规则、分组等）
   config["dns"] = dnsConfig;
   config["rule-providers"] = ruleProviders;
   config["rules"] = rules;
   config["proxy-groups"] = allGroups;
   
-  // 添加通用配置
-  config["mixed-port"] = "7890";
-  config["tcp-concurrent"] = true;
-  config["allow-lan"] = true;
-  config["ipv6"] = true;
-  config["log-level"] = "info";
+  // 7. 添加通用客户端配置（端口、LAN访问等）
+  config["mixed-port"] = "7890";       // 混合端口（支持HTTP/SOCKS）
+  config["tcp-concurrent"] = true;     // 启用TCP并发（提升速度）
+  config["allow-lan"] = true;          // 允许LAN访问（局域网共享代理）
+  config["ipv6"] = true;               // 启用IPv6（适配部分网络）
+  config["log-level"] = "info";        // 日志级别（info：基础日志，不冗余）
   
   return config;
 }

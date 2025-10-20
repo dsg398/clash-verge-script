@@ -266,7 +266,42 @@ function main(config) {
       "filter": "(?i)🇺🇸|美国|洛杉矶|圣何塞|(\\b(US|United States|America)\\b)",
       "icon": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/US.png"
     },
-
+    {
+      ...groupBaseOption,
+      "name": "日本",
+      "type": "select",
+      "proxies": ["自动选择", "自动回退", "节点选择", "全局直连"],
+      "include-all": true,
+      "filter": "(?i)🇯🇵|日本|东京|(\\b(JP|Japan)\\b)",
+      "icon": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/JP.png"
+    },
+    {
+      ...groupBaseOption,
+      "name": "香港",
+      "type": "select",
+      "proxies": ["自动选择", "自动回退", "节点选择", "全局直连"],
+      "include-all": true,
+      "filter": "(?i)🇭🇰|香港|(\\b(HK|Hong|HongKong)\\b)",
+      "icon": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/HK.png"
+    },        
+    {
+      ...groupBaseOption,
+      "name": "新加坡",
+      "type": "select",
+      "proxies": ["自动选择", "自动回退", "节点选择", "全局直连"],
+      "include-all": true,
+      "filter": "(?i)🇸🇬|新加坡|狮|(\\b(SG|Singapore)\\b)",
+      "icon": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/SG.png"
+    }  
+    {
+      ...groupBaseOption,
+      "name": "台湾",
+      "type": "select",
+      "proxies": ["自动选择", "自动回退", "节点选择", "全局直连"],
+      "include-all": true,
+      "filter": "(?i)🇨🇳|🇹🇼|台湾|(\\b(TW|Tai|Taiwan)\\b",
+      "icon": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/TW.png"
+    }  
     // 其他基础组
     {
       ...groupBaseOption,

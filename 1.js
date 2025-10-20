@@ -214,21 +214,20 @@ const groupBaseOption = {
   "hidden": false
 };
 
-// 杂项/高倍率过滤表达式（可根据需要调整）
+// 杂项/高倍率过滤表达式
 const EX_INFO = "(?i)群|邀请|返利|循环|建议|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|剩余|(\\b(USE|USED|TOTAL|Traffic|Expire|EMAIL|Panel|Channel|Author)\\b|\\d{4}-\\d{2}-\\d{2}|\\d+G)";
 const EX_RATE = "高倍|高倍率|倍率[2-9]|x[2-9]\\.?\\d*|\\([xX][2-9]\\.?\\d*\\)|\\[[xX][2-9]\\.?\\d*\\]|\\{[xX][2-9]\\.?\\d*\\}|（[xX][2-9]\\.?\\d*）|【[xX][2-9]\\.?\\d*】|【[2-9]x】|【\\d+[xX]】";
 const EX_ALL = `${EX_INFO}|${EX_RATE}`;
 
 // 地区分组工厂函数
 function createRegionGroups({ name, icon, filter }) {
-  const subNames = ["自动", "回退"];
-  const proxies = subNames.map(s => `${name}${s}`);
+  // 自动/回退组必须有 proxies 字段，否则会报错
   return [
     {
       ...groupBaseOption,
       name: `${name}节点`,
       type: "select",
-      proxies,
+      proxies: [`${name}自动`, `${name}回退`],
       filter,
       icon
     },
@@ -236,6 +235,8 @@ function createRegionGroups({ name, icon, filter }) {
       ...groupBaseOption,
       name: `${name}自动`,
       type: "url-test",
+      proxies: [],
+      include-all: true,
       hidden: true,
       filter,
       "exclude-filter": EX_ALL,
@@ -245,6 +246,8 @@ function createRegionGroups({ name, icon, filter }) {
       ...groupBaseOption,
       name: `${name}回退`,
       type: "fallback",
+      proxies: [],
+      include-all: true,
       hidden: true,
       filter,
       "exclude-filter": EX_INFO,

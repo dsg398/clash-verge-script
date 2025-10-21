@@ -434,7 +434,7 @@ function createRegionGroups({ name, icon, filter }) {
       // ⭐ 关键：使用 EX_INFO 排除所有杂项/管理/通知信息 ⭐
       "exclude-filter": EX_INFO,
 
-      "icon": "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Airport.png"
+      "icon": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Airport.png"
     },
     // 自动选择组
     {

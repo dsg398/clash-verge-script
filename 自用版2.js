@@ -740,9 +740,9 @@ function createRegionGroups({ name, icon, filter }) {
     "SUB-DOMAIN": [
       "OR,((RULE-SET,Telegram),(DOMAIN-KEYWORD,nicegram)),Telegram",
       "OR,((RULE-SET,GitHub),(DOMAIN-KEYWORD,github)),节点选择",
-      "OR,((RULE-SET,Instagram),(DOMAIN-KEYWORD,instagram),(DOMAIN-KEYWORD,instagr.am)),Instagram",
-      "OR,((RULE-SET,TikTok),(DOMAIN-KEYWORD,tiktok),(DOMAIN-KEYWORD,ttcdn)),TikTok",
-      "OR,((RULE-SET,WhatsApp),(DOMAIN-KEYWORD,whatsapp),(DOMAIN-KEYWORD,wa.me)),WhatsApp",
+      "OR,((RULE-SET,Instagram),(DOMAIN-KEYWORD,instagram)),Instagram",
+      "OR,((RULE-SET,TikTok),(DOMAIN-KEYWORD,tiktok)),TikTok",
+      "OR,((RULE-SET,WhatsApp),(DOMAIN-KEYWORD,whatsapp)),WhatsApp",
       "OR,((RULE-SET,YouTube),(DOMAIN-KEYWORD,youtube)),YouTube",
       "OR,((RULE-SET,Claude),(RULE-SET,OpenAI),(RULE-SET,Gemini),(AND,((RULE-SET,Copilot),(NOT,((DOMAIN,www.bing.com))))),(DOMAIN-KEYWORD,openai),(DOMAIN-KEYWORD,openaicom-api),(DOMAIN-KEYWORD,colab),(DOMAIN-KEYWORD,developerprofiles),(DOMAIN-KEYWORD,generativelanguage)),AI",
       "OR,((RULE-SET,Twitter),(DOMAIN-KEYWORD,twitter)),Twitter",

@@ -14,8 +14,6 @@ clash-verge Mihomo Party 防DNS泄露脚本 （通用）
 
 20250926 添加TikTok分流规则
 
-20251008 扩展脚本魔改版.js为自己用魔改可能会出现bug，增加Instagram,Whatsapp和Twitter分流规则,并增加五个地区分组且分组内会自动选择延迟低的节点
-
 自用版.js由jokjit的脚本简化并增加自己所需要的分流规则而来，目前自己主用
 
 来源于xiaolin-007

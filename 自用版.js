@@ -376,27 +376,27 @@ function createRegionGroups({ name, icon, filter }) {
   const regionGroups = [
         ...createRegionGroups({
       name: "美国",
-      icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png",
+      icon: "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/US.png",
       filter: "(?i)🇺🇸|美国|洛杉矶|圣何塞|纽约|波特兰|达拉斯|俄勒|凤凰城|费利蒙|圣克拉|西雅|芝加哥|(\\b(US|United States|America)\\b)"
     }),
         ...createRegionGroups({
       name: "日本",
-      icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png",
+      icon: "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/JP.png",
       filter: "(?i)🇯🇵|日本|东京|大阪|泉日|埼玉|沪日|深日|(\\b(JP|Japan)\\b)"
     }),
     ...createRegionGroups({
       name: "香港",
-      icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png",
+      icon: "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/HK.png",
       filter: "(?i)🇭🇰|香港|(\\b(HK|Hong|HongKong)\\b)"
     }),
     ...createRegionGroups({
       name: "台湾",
-      icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/China.png",
+      icon: "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/TW.png",
       filter: "(?i)🇨🇳|🇹🇼|台湾|(\\b(TW|Tai|Taiwan)\\b)"
     }),
     ...createRegionGroups({
       name: "新加坡",
-      icon: "https://gh-proxy.com/https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png",
+      icon: "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/SG.png",
       filter: "(?i)🇸🇬|新加坡|狮|(\\b(SG|Singapore)\\b)"
     }),
   ];

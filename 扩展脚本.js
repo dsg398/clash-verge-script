@@ -241,7 +241,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "节点选择",
       "type": "select",
-      "proxies": ["延迟选优", "故障转移"],
+      "proxies": ["延迟选优", "故障转移",  "美国自动", "日本自动", "香港自动", "台湾自动", "新加坡自动"],
       "include-all": true,
       "filter": "^(?!.*(官网|套餐|流量|异常|剩余)).*$",
       "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/adjust.svg"
@@ -268,7 +268,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "谷歌服务",
       "type": "select",
-      "proxies": ["节点选择", "延迟选优", "故障转移","全局直连"],
+      "proxies": ["节点选择", "延迟选优", "故障转移", "美国自动", "日本自动", "香港自动", "台湾自动", "新加坡自动", "全局直连"],
       "include-all": true,
       "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/google.svg"
     },
@@ -276,7 +276,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "YouTube",
       "type": "select",
-      "proxies": ["节点选择", "延迟选优", "故障转移","全局直连"],
+      "proxies": ["节点选择", "延迟选优", "故障转移", "美国自动", "日本自动", "香港自动", "台湾自动", "新加坡自动", "全局直连"],
       "include-all": true,
       "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/youtube.svg"
     },
@@ -284,7 +284,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "Netflix",
       "type": "select",
-      "proxies": ["节点选择", "延迟选优", "故障转移", "全局直连"],
+      "proxies": ["节点选择", "延迟选优", "故障转移", "美国自动", "日本自动", "香港自动", "台湾自动", "新加坡自动", "全局直连"],
       "include-all": true,
       "icon": "https://cdn.jsdmirror.com/gh/xiaolin-007/clash@main/icon/netflix.svg"
     },
@@ -292,7 +292,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "电报消息",
       "type": "select",
-      "proxies": ["节点选择", "延迟选优", "故障转移", "全局直连"],
+      "proxies": ["节点选择", "延迟选优", "故障转移", "美国自动", "日本自动", "香港自动", "台湾自动", "新加坡自动", "全局直连"],
       "include-all": true,
       "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/telegram.svg"
     },
@@ -301,7 +301,7 @@ function main(config) {
       "name": "AI",
       "type": "select",
       "include-all": true,
-      "proxies": ["节点选择", "延迟选优", "故障转移"],
+      "proxies": ["节点选择", "延迟选优", "故障转移", "美国自动", "日本自动", "香港自动", "台湾自动", "新加坡自动", "全局直连"],
       "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/chatgpt.svg"
     },
     {
@@ -309,7 +309,7 @@ function main(config) {
       "name": "TikTok",
       "type": "select",
       "include-all": true,
-      "proxies": ["节点选择", "延迟选优", "故障转移"],
+      "proxies": ["节点选择", "延迟选优", "故障转移", "美国自动", "日本自动", "香港自动", "台湾自动", "新加坡自动", "全局直连"],
       "icon": "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/Tiktok.png"
     },
     {
@@ -332,7 +332,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "动画疯",
       "type": "select",
-      "proxies": ["节点选择"],
+      "proxies": ["节点选择", "台湾自动"],
       "include-all": true,
       "filter": "(?i)台|tw|TW",
       "icon": "https://cdn.jsdmirror.com/gh/xiaolin-007/clash@main/icon/Bahamut.svg"
@@ -341,7 +341,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "哔哩哔哩港澳台",
       "type": "select",
-      "proxies": ["全局直连", "节点选择","延迟选优", "故障转移"],
+      "proxies": ["全局直连", "节点选择","延迟选优", "故障转移", "台湾自动","香港自动"],
       "include-all": true,
       "filter": "^(?!.*(官网|套餐|流量|异常|剩余)).*$",
       "icon": "https://cdn.jsdmirror.com/gh/xiaolin-007/clash@main/icon/bilibili.svg"
@@ -350,7 +350,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "Spotify",
       "type": "select",
-      "proxies": ["节点选择", "延迟选优", "故障转移","全局直连"],
+      "proxies": ["节点选择", "延迟选优", "故障转移", "美国自动", "日本自动", "香港自动", "台湾自动", "新加坡自动", "全局直连"],
       "include-all": true,
       "icon": "https://cdn.jsdmirror.com/gh/xiaolin-007/clash@main/icon/spotify.svg"
     },
@@ -378,6 +378,56 @@ function main(config) {
     },
     {
       ...groupBaseOption,
+      "name": "美国自动",
+      "type": "url-test",
+      "interval":120,
+      "tolerance": 200,
+      "include-all": true,
+      "filter": "(?=.*(广美|US|美国|纽约|波特兰|达拉斯|俄勒|凤凰城|费利蒙|洛杉|圣何塞|圣克拉|西雅|芝加|🇺🇸|United States)).*$",
+      "icon": "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/US.png"
+    },
+    {
+      ...groupBaseOption,
+      "name": "日本自动",
+      "type": "url-test",
+      "interval":120,
+      "tolerance": 200,
+      "include-all": true,
+      "filter": "(?=.*(广日|日本|JP|川日|东京|大阪|泉日|埼玉|沪日|深日|🇯🇵|Japan)).*$",
+      "icon": "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/JP.png"
+    },
+    {
+      ...groupBaseOption,
+      "name": "香港自动",
+      "type": "url-test",
+      "interval":120,
+      "tolerance": 200,
+      "include-all": true,
+      "filter": "(?=.*(广港|香港|HK|Hong Kong|🇭🇰|HongKong)).*$",
+      "icon": "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/HK.png"
+    },
+    {
+      ...groupBaseOption,
+      "name": "台湾自动",
+      "type": "url-test",
+      "interval":120,
+      "tolerance": 200,
+      "include-all": true,
+      "filter": "(?=.*(广台|台湾|台灣|TW|Tai Wan|🇹🇼|🇨🇳|TaiWan|Taiwan)).*$",
+      "icon": "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/TW.png"
+    },
+    {
+      ...groupBaseOption,
+      "name": "新加坡自动",
+      "type": "url-test",
+      "interval":120,
+      "tolerance": 200,
+      "include-all": true,
+      "filter": "(?=.*(广新|新加坡|SG|坡|狮城|🇸🇬|Singapore)).*$",
+      "icon": "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/SG.png"
+    },
+    {
+      ...groupBaseOption,
       "name": "漏网之鱼",
       "type": "select",
       "proxies": ["节点选择", "延迟选优", "故障转移","全局直连"],
@@ -402,4 +452,5 @@ function main(config) {
   return config;
 
 }
+
 

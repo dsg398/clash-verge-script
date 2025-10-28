@@ -361,9 +361,9 @@ function createRegionGroups({ name, icon, filter }) {
   // 1️⃣ 国际分组
   const socialGroups = createGroups([
     ["AI", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/AI.png"],
-    ["Telegram", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/telegram.png"],
+    ["Telegram", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Telegram.png"],
     ["Instagram", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Instagram.png"],
-    ["TikTok", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/tiktok.png"],
+    ["TikTok", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Tiktok.png"],
     ["Twitter", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/X.png"],
     ["WhatsApp", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Whatsapp.png"],
     ["YouTube", "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/Youtube.png"],

@@ -177,12 +177,6 @@ const ruleProviders = {
     "url": "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/rule/TikTok.txt",
     "path": "./ruleset/xiaolin-007/TikTok.yaml"    
   },
-  "Instagram": {
-    ...ruleProviderCommon,
-    "behavior": "classical",
-    "url": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/rule/Instagram.txt",
-    "path": "./ruleset/dsg398/Instagram.yaml"    
-  },
 };
 // 规则
 const rules = [
@@ -204,7 +198,6 @@ const rules = [
   "RULE-SET,Spotify,Spotify",
   "RULE-SET,BilibiliHMT,哔哩哔哩港澳台",
   "RULE-SET,AI,AI",
-  "RULE-SET,Instagram,Instagram",
   "RULE-SET,TikTok,TikTok",
   "RULE-SET,google,谷歌服务",
   "RULE-SET,proxy,节点选择",
@@ -251,7 +244,7 @@ function main(config) {
       "proxies": ["延迟选优", "故障转移"],
       "include-all": true,
       "filter": "^(?!.*(官网|套餐|流量|异常|剩余)).*$",
-      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/adjust.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/adjust.svg"
     },
     {
       ...groupBaseOption,
@@ -261,7 +254,7 @@ function main(config) {
       "tolerance": 200,
       "include-all": true,
       "filter": "^(?!.*(官网|套餐|流量|异常|剩余)).*$",
-      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/speed.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/speed.svg"
     },
     {
       ...groupBaseOption,
@@ -269,7 +262,7 @@ function main(config) {
       "type": "fallback",
       "include-all": true,
       "filter": "^(?!.*(官网|套餐|流量|异常|剩余)).*$",
-      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/ambulance.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/ambulance.svg"
     },
     {
       ...groupBaseOption,
@@ -277,7 +270,7 @@ function main(config) {
       "type": "select",
       "proxies": ["节点选择", "延迟选优", "故障转移","全局直连"],
       "include-all": true,
-      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/google.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/google.svg"
     },
     {
       ...groupBaseOption,
@@ -285,7 +278,7 @@ function main(config) {
       "type": "select",
       "proxies": ["节点选择", "延迟选优", "故障转移","全局直连"],
       "include-all": true,
-      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/youtube.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/youtube.svg"
     },
     {
       ...groupBaseOption,
@@ -293,7 +286,7 @@ function main(config) {
       "type": "select",
       "proxies": ["节点选择", "延迟选优", "故障转移", "全局直连"],
       "include-all": true,
-      "icon": "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/icon/netflix.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/xiaolin-007/clash@main/icon/netflix.svg"
     },
     {
       ...groupBaseOption,
@@ -301,7 +294,7 @@ function main(config) {
       "type": "select",
       "proxies": ["节点选择", "延迟选优", "故障转移", "全局直连"],
       "include-all": true,
-      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/telegram.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/telegram.svg"
     },
     {
       ...groupBaseOption,
@@ -309,7 +302,7 @@ function main(config) {
       "type": "select",
       "include-all": true,
       "proxies": ["节点选择", "延迟选优", "故障转移"],
-      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/chatgpt.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/chatgpt.svg"
     },
     {
       ...groupBaseOption,
@@ -317,15 +310,7 @@ function main(config) {
       "type": "select",
       "include-all": true,
       "proxies": ["节点选择", "延迟选优", "故障转移"],
-      "icon": "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/icon/tiktok.svg"
-    },
-     {
-      ...groupBaseOption,
-      "name": "Instagram",
-      "type": "select",
-      "include-all": true,
-      "proxies": ["节点选择", "延迟选优", "故障转移"],
-      "icon": "https://fastly.jsdelivr.net/gh/dsg398/clash@main/icon/instagram.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/xiaolin-007/clash@main/icon/tiktok.svg"
     },
     {
       ...groupBaseOption,
@@ -333,7 +318,7 @@ function main(config) {
       "type": "select",
       "proxies": ["全局直连", "节点选择", "延迟选优"],
       "include-all": true,
-      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/microsoft.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/microsoft.svg"
     },
     {
       ...groupBaseOption,
@@ -341,7 +326,7 @@ function main(config) {
       "type": "select",
       "proxies": ["节点选择", "延迟选优", "故障转移","全局直连"],
       "include-all": true,
-      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/apple.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/apple.svg"
     },
     {
       ...groupBaseOption,
@@ -350,7 +335,7 @@ function main(config) {
       "proxies": ["节点选择"],
       "include-all": true,
       "filter": "(?i)台|tw|TW",
-      "icon": "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/icon/Bahamut.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/xiaolin-007/clash@main/icon/Bahamut.svg"
     },
     {
       ...groupBaseOption,
@@ -359,7 +344,7 @@ function main(config) {
       "proxies": ["全局直连", "节点选择","延迟选优", "故障转移"],
       "include-all": true,
       "filter": "^(?!.*(官网|套餐|流量|异常|剩余)).*$",
-      "icon": "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/icon/bilibili.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/xiaolin-007/clash@main/icon/bilibili.svg"
     },
     {
       ...groupBaseOption,
@@ -367,14 +352,14 @@ function main(config) {
       "type": "select",
       "proxies": ["节点选择", "延迟选优", "故障转移","全局直连"],
       "include-all": true,
-      "icon": "https://fastly.jsdelivr.net/gh/xiaolin-007/clash@main/icon/spotify.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/xiaolin-007/clash@main/icon/spotify.svg"
     },
     {
       ...groupBaseOption,
       "name": "广告过滤",
       "type": "select",
       "proxies": ["REJECT", "DIRECT"],
-      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/bug.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/bug.svg"
     },
     {
       ...groupBaseOption,
@@ -382,14 +367,14 @@ function main(config) {
       "type": "select",
       "proxies": ["DIRECT", "节点选择", "延迟选优", "故障转移"],
       "include-all": true,
-      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/link.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/link.svg"
     },
     {
       ...groupBaseOption,
       "name": "全局拦截",
       "type": "select",
       "proxies": ["REJECT", "DIRECT"],
-      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/block.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/block.svg"
     },
     {
       ...groupBaseOption,
@@ -398,7 +383,7 @@ function main(config) {
       "proxies": ["节点选择", "延迟选优", "故障转移","全局直连"],
       "include-all": true,
       "filter": "^(?!.*(官网|套餐|流量|异常|剩余)).*$",
-      "icon": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/fish.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/fish.svg"
     }
   ];
 
@@ -417,5 +402,3 @@ function main(config) {
   return config;
 
 }
-
-

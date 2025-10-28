@@ -310,7 +310,7 @@ function main(config) {
       "type": "select",
       "include-all": true,
       "proxies": ["节点选择", "延迟选优", "故障转移"],
-      "icon": "https://cdn.jsdmirror.com/gh/xiaolin-007/clash@main/icon/tiktok.svg"
+      "icon": "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/Tiktok.png"
     },
     {
       ...groupBaseOption,
@@ -402,3 +402,4 @@ function main(config) {
   return config;
 
 }
+

@@ -361,9 +361,9 @@ function createRegionGroups({ name, icon, filter }) {
     ["Telegram", "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/Telegram.png"],
     ["Instagram", "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/Instagram.png"],
     ["TikTok", "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/Tiktok.png"],
-    ["Twitter", "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/Twitter.png"],
+    ["Twitter", "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/X.png"],
     ["WhatsApp", "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/Whatsapp.png"],
-    ["YouTube", "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/YouTube.png"],
+    ["YouTube", "https://cdn.jsdmirror.com/gh/dsg398/clash@main/icon/Youtube.png"],
     ["国际媒体", "https://cdn.jsdmirror.com/gh/jokjit/mihomo-rules@main/icon/Pr_Media.png"],
   ]);
 

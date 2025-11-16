@@ -11,7 +11,7 @@ const EX_INFO = [
   // 中文杂项/管理信息
   "(?i)群|邀请|返利|循环|建议|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入",
   // 英文/格式化信息（流量、日期等）
-  "剩余|(\\b(USE|USED|TOTAL|Traffic|Expire|EMAIL|Panel|Channel|Author)\\b|\\d{4}-\\d{2}-\\d{2}|\\d+G)"
+  "可用|剩余|(\\b(USE|USED|TOTAL|Traffic|Expire|EMAIL|Panel|Channel|Author)\\b|\\d{4}-\\d{2}-\\d{2}|\\d+G)"
 ].join('|');
 
 // 2. 排除所有高倍率标识
@@ -77,9 +77,9 @@ const main = (config) => {
 
   // 国外 DNS 服务器（精简稳定版）
   const foreignNameservers = [
-  "https://cloudflare-dns.com/dns-query",       // Cloudflare (快 + 稳定)
+  "quic://dns.adguard-dns.com", 
+  "https://cloudflare-dns.com/dns-query#h3=true",       // Cloudflare (快 + 稳定)
   "https://8.8.8.8/dns-query",       // Google (广泛可用)
-  "https://9.9.9.9/dns-query",       // Quad9 (安全性好，过滤恶意域名)
   ];
 
   // 默认明文 DNS (用于 default-nameserver 和 proxy-server-nameserver 一致性)
@@ -91,7 +91,7 @@ const main = (config) => {
     "enable": true,
     "listen": "0.0.0.0:1053",
     "respect-rules": true,
-    "prefer-h3": true,
+    "prefer-h3": false,
     "ipv6": true,
     "cache-algorithm": "arc",
     "enhanced-mode": "fake-ip",
@@ -142,8 +142,6 @@ const main = (config) => {
     },
     "force-domain": ["+.v2ex.com"],
     "skip-domain": ["Mijia.Cloud.com"],
-    "skip-src-address": ["192.168.0.3/32"],
-    "skip-dst-address": ["192.168.0.3/32"]
   };
 
 
@@ -157,11 +155,9 @@ const main = (config) => {
       "any:53",
       "tcp://any:53"
     ],
-    "device": "utun0",
+    "device": "mihomo",
     "mtu": 1500,
     "strict-route": true,
-    "gso": true,
-    "gso-max-size": 65536,
     "udp-timeout": 300,
     "endpoint-independent-nat": false
   };
